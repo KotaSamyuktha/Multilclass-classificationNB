@@ -1,0 +1,5 @@
+spec:
+  template:
+    predictor:
+      containers:
+        - image: docker.io/jerushan/transaction-analyzer-rnd:latest
