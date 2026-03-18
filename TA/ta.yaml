@@ -7,19 +7,20 @@ metadata:
     executables.ai.sap.com/name: "transacanalyzer-executable"
 spec:
   template:
-    predictor:
-      containers:
-        - name: transaction-analyzer
-          image: docker.io/jerushan/transaction-analyzer-rnd:latest
-          ports:
-            - containerPort: 8080
-          env:
-            - name: MODEL
-              value: "production"
-          resources:
-            limits:
-              cpu: "1"
-              memory: "2Gi"
-            requests:
-              cpu: "0.5"
-              memory: "1Gi"
+    spec:
+      predictor:
+        containers:
+          - name: transaction-analyzer
+            image: docker.io/jerushan/transaction-analyzer-rnd:latest
+            ports:
+              - containerPort: 8080
+            env:
+              - name: MODEL
+                value: "production"
+            resources:
+              limits:
+                cpu: "1"
+                memory: "2Gi"
+              requests:
+                cpu: "0.5"
+                memory: "1Gi"
