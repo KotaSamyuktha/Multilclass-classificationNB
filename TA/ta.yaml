@@ -1,5 +1,25 @@
+apiVersion: ai.sap.com/v1alpha1
+kind: ServingTemplate
+metadata:
+  name: transacanalyzer-serving-template
+  annotations:
+    scenarios.ai.sap.com/description: "Serving template for transacanalyzer"
+    executables.ai.sap.com/name: "transacanalyzer-executable"
 spec:
   template:
     predictor:
       containers:
-        - image: docker.io/jerushan/transaction-analyzer-rnd:latest
+        - name: transaction-analyzer
+          image: docker.io/jerushan/transaction-analyzer-rnd:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MODEL
+              value: "production"
+          resources:
+            limits:
+              cpu: "1"
+              memory: "2Gi"
+            requests:
+              cpu: "0.5"
+              memory: "1Gi"
