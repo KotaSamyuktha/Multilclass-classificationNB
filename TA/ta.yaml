@@ -19,17 +19,17 @@ spec:
     apiVersion: "serving.kserve.io/v1beta1"
     metadata:
       annotations: '{"autoscaling.knative.dev/metric": "concurrency", "autoscaling.knative.dev/target": "1"}'
-      labels: 
-        ai.sap.com/resourcePlan: "starter"
+      labels: '{"ai.sap.com/resourcePlan": "starter"}'
     spec: |
       predictor:
         minReplicas: 1
         maxReplicas: 2
         containers:
-          - name: transaction-analyzer
+          - name: kserve-container
             image: docker.io/jerushan/transaction-analyzer-rnd:latest
             ports:
               - containerPort: 8080
+                protocol: TCP
             env:
               - name: MODEL
                 value: "production"
