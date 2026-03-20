@@ -7,23 +7,20 @@ metadata:
     scenarios.ai.sap.com/name: "transacanalyzer"
     executables.ai.sap.com/description: "Serving executable for transacanalyzer"
     executables.ai.sap.com/name: "transacanalyzer-executable"
-  labels:                                           # ✅ FIX 1: Added labels block
-    scenarios.ai.sap.com/id: "transacanalyzer"      #    Must match your scenario ID
+  labels:
+    scenarios.ai.sap.com/id: "transacanalyzer"
     executables.ai.sap.com/id: "transacanalyzer-executable"
-    ai.sap.com/version: "1.0.0"                     # ✅ FIX 2: Mandatory version label
+    ai.sap.com/version: "1.0.0"
 spec:
   inputs:
     parameters: []
     artifacts: []
   template:
-    apiVersion: "serving.kserve.io/v1beta1"         # ✅ FIX 3: Mandatory apiVersion
-    metadata:                                        # ✅ FIX 5: Added template metadata
-      annotations:
-        autoscaling.knative.dev/metric: concurrency
-        autoscaling.knative.dev/target: "1"
-      labels:
-        ai.sap.com/resourcePlan: starter             #    Options: starter, infer.s, infer.m, infer.l
-    spec:                                            # ✅ FIX 4: spec is YAML object, not string (removed |)
+    apiVersion: "serving.kserve.io/v1beta1"
+    metadata:
+      annotations: '{"autoscaling.knative.dev/metric": "concurrency", "autoscaling.knative.dev/target": "1"}'
+      labels: '{"ai.sap.com/resourcePlan": "starter"}'
+    spec: |
       predictor:
         minReplicas: 1
         maxReplicas: 2
