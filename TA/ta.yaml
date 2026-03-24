@@ -14,6 +14,10 @@ metadata:
 spec:
   inputs:
     parameters:
+      - name: modelName
+        default: "transacanalyzer:2b" 
+        type: "string"
+        description: "model name"
       - name: resourcePlan
         type: "string"
         default: "infer.l"
