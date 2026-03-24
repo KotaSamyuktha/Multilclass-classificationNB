@@ -3,9 +3,9 @@ kind: ServingTemplate
 metadata:
   name: transacanalyzer-serving-template
   annotations:
-    scenarios.ai.sap.com/description: "Serving template for transacanalyzer"
+    scenarios.ai.sap.com/description: "Transaction Analyzer - Flask API for tax category prediction"
     scenarios.ai.sap.com/name: "transacanalyzer"
-    executables.ai.sap.com/description: "Serving executable for transacanalyzer"
+    executables.ai.sap.com/description: "Flask serving executable for transaction analyzer"
     executables.ai.sap.com/name: "transacanalyzer-executable"
   labels:
     scenarios.ai.sap.com/id: "transacanalyzer"
@@ -14,14 +14,8 @@ metadata:
 spec:
   inputs:
     parameters:
-      - name: modelName
-        default: "transacanalyzer:2b" 
-        type: "string"
-        description: "model name"
-      - name: resourcePlan
-        type: "string"
-        default: "infer.l"
-        description: "Resource Plan of SAP AI Core. Supported: infer.s, infer.m, infer.l, train.l"
+      - name: market
+        type: string
     artifacts: []
   template:
     apiVersion: "serving.kserve.io/v1beta1"
@@ -39,12 +33,14 @@ spec:
               - containerPort: 8080
                 protocol: TCP
             env:
-              - name: MODEL
-                value: "production"
+              - name: PORT
+                value: "8080"
+              - name: MARKET
+                value: "{{inputs.parameters.market}}"
             resources:
               limits:
+                cpu: "2"
+                memory: "4Gi"
+              requests:
                 cpu: "1"
                 memory: "2Gi"
-              requests:
-                cpu: "0.5"
-                memory: "1Gi"
