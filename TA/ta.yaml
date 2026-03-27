@@ -1,42 +1,35 @@
 apiVersion: ai.sap.com/v1alpha1
 kind: ServingTemplate
 metadata:
-  name: transacanalyzer-serving-template
+  name: flask-health-api-template
   annotations:
-    scenarios.ai.sap.com/description: "Serving template for transacanalyzer"
-    scenarios.ai.sap.com/name: "transacanalyzer"
-    executables.ai.sap.com/description: "Serving executable for transacanalyzer"
-    executables.ai.sap.com/name: "transacanalyzer-executable"
+    scenarios.ai.sap.com/description: "Flask SAM API"
+    scenarios.ai.sap.com/name: "flask-sam"
+    executables.ai.sap.com/description: "FlaskS"
+    executables.ai.sap.com/name: "flask-Sam-executable"
   labels:
-    scenarios.ai.sap.com/id: "transacanalyzer"
-    executables.ai.sap.com/id: "transacanalyzer-executable"
+    scenarios.ai.sap.com/id: "flask-sam"
     ai.sap.com/version: "1.0.0"
 spec:
   inputs:
     parameters: []
-    artifacts: []
   template:
     apiVersion: "serving.kserve.io/v1beta1"
     metadata:
-      annotations: '{"autoscaling.knative.dev/metric": "concurrency", "autoscaling.knative.dev/target": "1"}'
-      labels: '{"ai.sap.com/resourcePlan": "infer.s"}'
+      annotations: "{}"
+      labels: "{\"ai.sap.com/resourcePlan\": \"starter\"}"
     spec: |
       predictor:
         minReplicas: 1
         maxReplicas: 2
         containers:
           - name: kserve-container
-            image: docker.io/jerushan/transaction-analyzer-rnd:latest
+            image: jerushan/flasksam:1.0.0
             ports:
               - containerPort: 8080
                 protocol: TCP
-            env:
-              - name: PORT
-                value: "8080"
-            resources:
-              limits:
-                cpu: "500m"
-                memory: "2Gi"
-              requests:
-                cpu: "2000m"
-                memory: "4Gi"
+            command: ["gunicorn"]
+            args:
+              - "--bind"
+              - "0.0.0.0:8080"
+              - "app:app"
